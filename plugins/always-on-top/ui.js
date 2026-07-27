@@ -1,61 +1,48 @@
 const toggleState = { isTop: false };
 
 module.exports = {
-  mount: () => {
-    const titlebar = document.querySelector('.titlebar');
-    if (!titlebar) return;
+  mount: (container) => {
+    if (!container) return;
     
-    // Create custom menu element
-    const menu = document.createElement('div');
-    menu.id = 'aot-context-menu';
-    menu.style.position = 'fixed';
-    menu.style.display = 'none';
-    menu.style.background = 'rgba(25, 25, 30, 0.95)';
-    menu.style.backdropFilter = 'blur(10px)';
-    menu.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-    menu.style.padding = '8px 12px';
-    menu.style.borderRadius = '6px';
-    menu.style.cursor = 'pointer';
-    menu.style.zIndex = '99999';
-    menu.style.color = '#fff';
-    menu.style.fontFamily = 'monospace';
-    menu.style.fontSize = '12px';
-    menu.style.boxShadow = '0 4px 12px rgba(0,0,0,0.5)';
-    menu.innerText = 'Enable Always on Top';
+    // Create custom pin button
+    const pinBtn = document.createElement('div');
+    pinBtn.id = 'aot-pin-btn';
+    pinBtn.style.cursor = 'pointer';
+    pinBtn.style.display = 'flex';
+    pinBtn.style.alignItems = 'center';
+    pinBtn.style.justifyContent = 'center';
+    pinBtn.style.padding = '2px 6px';
+    pinBtn.style.borderRadius = '4px';
+    pinBtn.style.transition = 'all 0.2s';
+    pinBtn.style.color = '#a0a0a5';
+    // non-drag region to ensure clicks register
+    pinBtn.style.webkitAppRegion = 'no-drag';
+    
+    // SVG Pin Icon
+    pinBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>`;
     
     // Hover effects
-    menu.onmouseenter = () => menu.style.background = 'rgba(40, 40, 45, 0.95)';
-    menu.onmouseleave = () => menu.style.background = 'rgba(25, 25, 30, 0.95)';
+    pinBtn.onmouseenter = () => pinBtn.style.background = 'rgba(255, 255, 255, 0.1)';
+    pinBtn.onmouseleave = () => pinBtn.style.background = 'transparent';
     
-    document.body.appendChild(menu);
+    container.appendChild(pinBtn);
 
-    menu.onclick = () => {
+    pinBtn.onclick = () => {
       toggleState.isTop = !toggleState.isTop;
       window.electronAPI.setAlwaysOnTop(toggleState.isTop);
-      menu.style.display = 'none';
-      menu.innerText = toggleState.isTop ? 'Disable Always on Top' : 'Enable Always on Top';
+      
+      if (toggleState.isTop) {
+        pinBtn.style.color = 'var(--accent)';
+        pinBtn.style.background = 'rgba(255, 255, 255, 0.1)';
+      } else {
+        pinBtn.style.color = '#a0a0a5';
+        pinBtn.style.background = 'transparent';
+      }
     };
-
-    const hideMenu = () => {
-      menu.style.display = 'none';
-    };
-    
-    document.addEventListener('click', hideMenu);
-
-    const onContextMenu = (e) => {
-      e.preventDefault();
-      menu.style.left = e.pageX + 'px';
-      menu.style.top = e.pageY + 'px';
-      menu.style.display = 'block';
-    };
-
-    titlebar.addEventListener('contextmenu', onContextMenu);
 
     // Store cleanup function for unmount
     this._cleanup = () => {
-      titlebar.removeEventListener('contextmenu', onContextMenu);
-      document.removeEventListener('click', hideMenu);
-      menu.remove();
+      pinBtn.remove();
     };
   },
   
