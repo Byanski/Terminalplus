@@ -4,6 +4,25 @@
   "commands": {
     "ls": "ls.js",
     "pwd": "pwd.js",
-    "grep": "grep.js"
+    "grep": "grep.js",
+    "sudo": "sudo.js",
+    "cp": "cp.js",
+    "touch": "touch.js",
+    "man": "man.js",
+    "sort": "sort.js",
+    "mv": "mv.js",
+    "ln": "ln.js",
+    "cal": "cal.js",
+    "rm": "rm.js",
+    "cat": "cat.js",
+    "whereis": "whereis.js",
+    "uname": "uname.js",
+    "clear": "clear.js",
+    "wget": "wget.js",
+    "df": "df.js",
+    "locate": "locate.js",
+    "ps": "ps.js",
+    "whoami": "whoami.js",
+    "wc": "wc.js"
   }
 }

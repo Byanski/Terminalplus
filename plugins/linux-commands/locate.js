@@ -1,0 +1,1 @@
+console.log('locate is not indexed on this system. Use dir /s or File Explorer.');
