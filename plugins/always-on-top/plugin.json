@@ -1,0 +1,5 @@
+{
+  "name": "Always on Top",
+  "description": "Right-click the title bar to toggle 'Always on Top' mode.",
+  "renderer": "ui.js"
+}

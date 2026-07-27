@@ -22,6 +22,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   maximizeApp: () => {
     ipcRenderer.send('app.maximize');
   },
+  setAlwaysOnTop: (flag: boolean) => {
+    ipcRenderer.send('app.setAlwaysOnTop', flag);
+  },
   getPlugins: () => ipcRenderer.invoke('plugins.get'),
   togglePlugin: (id: string, enabled: boolean) => ipcRenderer.invoke('plugins.toggle', id, enabled),
   openPluginsFolder: () => ipcRenderer.invoke('plugins.openFolder'),

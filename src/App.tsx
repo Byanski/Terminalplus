@@ -14,6 +14,7 @@ declare global {
       closeApp: () => void;
       minimizeApp: () => void;
       maximizeApp: () => void;
+      setAlwaysOnTop: (flag: boolean) => void;
       getPlugins: () => Promise<any[]>;
       togglePlugin: (id: string, enabled: boolean) => Promise<void>;
       openPluginsFolder: () => Promise<void>;

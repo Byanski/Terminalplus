@@ -237,3 +237,7 @@ ipcMain.on('app.maximize', () => {
     mainWindow?.maximize();
   }
 });
+
+ipcMain.on('app.setAlwaysOnTop', (event, flag) => {
+  mainWindow?.setAlwaysOnTop(flag);
+});
