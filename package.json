@@ -54,7 +54,7 @@
       "target": [
         "nsis"
       ],
-      "icon": "dist/vite.svg"
+      "icon": "public/icon.png"
     }
   }
 }
