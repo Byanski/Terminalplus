@@ -1,0 +1,9 @@
+{
+  "name": "Linux Commands",
+  "description": "Brings essential Linux/Unix commands like ls, pwd, and grep to your Windows terminal.",
+  "commands": {
+    "ls": "ls.js",
+    "pwd": "pwd.js",
+    "grep": "grep.js"
+  }
+}

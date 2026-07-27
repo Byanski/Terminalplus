@@ -1,0 +1,60 @@
+{
+  "name": "custom-terminal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev:electron": "tsc -p tsconfig.electron.json && wait-on tcp:3000 && electron .",
+    "dev:react": "vite",
+    "dev": "concurrently \"npm run dev:react\" \"npm run dev:electron\"",
+    "build:electron": "tsc -p tsconfig.electron.json",
+    "build:react": "vite build",
+    "build": "npm run build:react && npm run build:electron",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.4",
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/xterm": "^6.0.0",
+    "node-pty": "^1.1.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "typescript": "^7.0.2",
+    "vite": "^8.1.5",
+    "xterm": "^5.3.0"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.4",
+    "cross-env": "^10.1.0",
+    "electron": "^43.2.0",
+    "electron-builder": "^26.15.3",
+    "ts-node": "^10.9.2",
+    "wait-on": "^9.1.0"
+  },
+  "build": {
+    "appId": "com.byanski.terminalplus",
+    "productName": "Terminal+",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "plugins/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "dist/vite.svg"
+    }
+  }
+}

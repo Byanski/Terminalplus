@@ -1,0 +1,5 @@
+{
+  "name": "System Monitor",
+  "description": "Displays real-time CPU and RAM usage in the titlebar.",
+  "renderer": "ui.js"
+}
