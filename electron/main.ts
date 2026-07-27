@@ -135,7 +135,7 @@ app.whenReady().then(() => {
   createWindow();
   loadPluginSettings();
   reloadPlugins();
-  spawnShell('cmd'); // Default to cmd as requested
+  // Shell will be spawned when React frontend sends app.switchShell on mount
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

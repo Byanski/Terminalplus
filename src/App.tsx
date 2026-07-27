@@ -85,6 +85,8 @@ export default function App() {
     // Initial resize to sync pty size
     setTimeout(() => {
       handleResize();
+      // Only request the shell spawn after the frontend is fully ready and listening!
+      window.electronAPI.switchShell('cmd');
     }, 100);
 
     return () => {
