@@ -67,8 +67,14 @@ const keystrokeInterceptors: ((key: string) => boolean | void)[] = [];
 // NEW PLUGIN ARCHITECTURE
 let pluginSettings: Record<string, boolean> = {};
 
+function getPluginsDir() {
+  return app.isPackaged 
+    ? path.join(process.resourcesPath, 'plugins')
+    : path.join(__dirname, '..', 'plugins');
+}
+
 function getPluginSettingsPath() {
-  return path.join(__dirname, '..', 'plugins', 'settings.json');
+  return path.join(getPluginsDir(), 'settings.json');
 }
 
 function loadPluginSettings() {
@@ -86,11 +92,11 @@ function savePluginSettings() {
 }
 
 function reloadPlugins() {
-  const pluginsDir = path.join(__dirname, '..', 'plugins');
+  const pluginsDir = getPluginsDir();
   const binDir = path.join(pluginsDir, '.bin');
 
-  if (!fs.existsSync(pluginsDir)) fs.mkdirSync(pluginsDir);
-  if (!fs.existsSync(binDir)) fs.mkdirSync(binDir);
+  if (!fs.existsSync(pluginsDir)) fs.mkdirSync(pluginsDir, { recursive: true });
+  if (!fs.existsSync(binDir)) fs.mkdirSync(binDir, { recursive: true });
 
   // Clear existing wrappers
   const existingWrappers = fs.readdirSync(binDir);
@@ -179,7 +185,7 @@ ipcMain.on('app.switchShell', (event, shellName) => {
 import { shell as electronShell } from 'electron';
 
 ipcMain.handle('plugins.get', () => {
-  const pluginsDir = path.join(__dirname, '..', 'plugins');
+  const pluginsDir = getPluginsDir();
   if (!fs.existsSync(pluginsDir)) return [];
   
   const pluginsList = [];
@@ -213,13 +219,9 @@ ipcMain.handle('plugins.toggle', (event, pluginId, enabled) => {
 });
 
 ipcMain.handle('plugins.openFolder', () => {
-  const pluginsDir = path.join(__dirname, '..', 'plugins');
-  if (!fs.existsSync(pluginsDir)) fs.mkdirSync(pluginsDir);
+  const pluginsDir = getPluginsDir();
+  if (!fs.existsSync(pluginsDir)) fs.mkdirSync(pluginsDir, { recursive: true });
   electronShell.openPath(pluginsDir);
-});
-
-ipcMain.on('app.switchShell', (event, shellName) => {
-  spawnShell(shellName);
 });
 
 ipcMain.on('app.close', () => {

@@ -47,8 +47,14 @@
     "files": [
       "dist/**/*",
       "dist-electron/**/*",
-      "plugins/**/*",
       "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "plugins",
+        "to": "plugins",
+        "filter": ["**/*"]
+      }
     ],
     "win": {
       "target": [
