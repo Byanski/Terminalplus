@@ -145,19 +145,32 @@ export default function App() {
     document.documentElement.style.setProperty('--root-bg-color', bgColor);
   }, [bgColor, opacity]);
 
+  // Load custom background image on mount
+  useEffect(() => {
+    const savedBg = localStorage.getItem('customBackgroundImage');
+    if (savedBg) {
+      document.documentElement.style.setProperty('--root-bg-image', `url("${savedBg}")`);
+    }
+  }, []);
+
   const handleBackgroundUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (ev) => {
         if (ev.target?.result) {
-          document.documentElement.style.setProperty('--root-bg-image', `url("${ev.target.result}")`);
+          const dataUrl = ev.target.result as string;
+          document.documentElement.style.setProperty('--root-bg-image', `url("${dataUrl}")`);
+          localStorage.setItem('customBackgroundImage', dataUrl);
         }
       };
       reader.readAsDataURL(file);
-    } else {
-      document.documentElement.style.setProperty('--root-bg-image', 'none');
     }
+  };
+
+  const resetBackground = () => {
+    document.documentElement.style.setProperty('--root-bg-image', 'none');
+    localStorage.removeItem('customBackgroundImage');
   };
 
   const handleFontUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -355,11 +368,15 @@ export default function App() {
 
           <div className="settings-row">
             <label>Custom BG Image</label>
-            <input 
-              type="file" 
-              accept="image/*"
-              onChange={handleBackgroundUpload}
-            />
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <input 
+                type="file" 
+                accept="image/*"
+                onChange={handleBackgroundUpload}
+                style={{ width: '130px' }}
+              />
+              <button onClick={resetBackground} style={{ background: '#333', color: '#fff', border: '1px solid #444', borderRadius: '4px', cursor: 'pointer', padding: '0 8px' }}>Reset</button>
+            </div>
           </div>
         </div>
         </>
