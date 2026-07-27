@@ -204,21 +204,7 @@ export default function App() {
 
   const loadPluginsList = async () => {
     const list = await window.electronAPI.getPlugins();
-    
-    // Use functional state update to access the latest pluginsList
-    setPluginsList(currentPluginsList => {
-      list.forEach(plugin => {
-        if (plugin.renderer) {
-          const wasEnabled = currentPluginsList.find(p => p.id === plugin.id)?.enabled;
-          if (plugin.enabled && !wasEnabled) {
-            window.electronAPI.loadFrontendPlugin(plugin.pluginPath, plugin.renderer);
-          } else if (!plugin.enabled && wasEnabled) {
-            window.electronAPI.unmountFrontendPlugin(plugin.pluginPath, plugin.renderer);
-          }
-        }
-      });
-      return list;
-    });
+    setPluginsList(list);
   };
 
   // Initial mount load plugins
@@ -413,8 +399,21 @@ export default function App() {
                         checked={plugin.enabled}
                         onChange={async (e) => {
                           const enabled = e.target.checked;
+                          
+                          // Optimistic UI update
+                          setPluginsList(prev => prev.map(p => p.id === plugin.id ? { ...p, enabled } : p));
+                          
+                          // Explicitly handle Frontend Plugin Mount/Unmount
+                          if (plugin.renderer) {
+                            if (enabled) {
+                              window.electronAPI.loadFrontendPlugin(plugin.pluginPath, plugin.renderer);
+                            } else {
+                              window.electronAPI.unmountFrontendPlugin(plugin.pluginPath, plugin.renderer);
+                            }
+                          }
+
                           await window.electronAPI.togglePlugin(plugin.id, enabled);
-                          loadPluginsList(); // reload after toggle
+                          loadPluginsList(); // Sync backend state
                         }}
                         style={{ accentColor: 'var(--accent)', width: '16px', height: '16px' }}
                       />
