@@ -41,7 +41,7 @@ export default function App() {
   const [opacity, setOpacity] = useState(0.85);
   const [bgColor, setBgColor] = useState('#121214');
   const [fgColor, setFgColor] = useState('#f0f0f0');
-  const [shell, setShell] = useState('cmd');
+  const [shell, setShell] = useState('default');
   const [fontSize, setFontSize] = useState(14);
   const [fontFamily, setFontFamily] = useState('Consolas, "Courier New", monospace');
 
@@ -87,7 +87,7 @@ export default function App() {
     setTimeout(() => {
       handleResize();
       // Only request the shell spawn after the frontend is fully ready and listening!
-      window.electronAPI.switchShell('cmd');
+      window.electronAPI.switchShell('default');
     }, 100);
 
     return () => {
@@ -285,8 +285,11 @@ export default function App() {
           <div className="settings-row">
             <label>Shell Profile</label>
             <select value={shell} onChange={handleShellChange}>
-              <option value="cmd">Command Prompt</option>
-              <option value="powershell">PowerShell</option>
+              <option value="default">System Default</option>
+              <option value="cmd">Command Prompt (Windows)</option>
+              <option value="powershell">PowerShell (Windows)</option>
+              <option value="zsh">Zsh (Mac/Linux)</option>
+              <option value="bash">Bash (Mac/Linux)</option>
             </select>
           </div>
 

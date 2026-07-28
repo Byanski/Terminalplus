@@ -61,6 +61,12 @@
         "nsis"
       ],
       "icon": "public/icon.png"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "public/icon.png"
     }
   }
 }

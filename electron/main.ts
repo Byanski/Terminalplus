@@ -39,9 +39,19 @@ function spawnShell(shellName: string) {
     ptyProcess.kill();
   }
 
-  const shell = shellName === 'powershell' 
-    ? 'powershell.exe' 
-    : process.env[os.platform() === 'win32' ? 'COMSPEC' : 'SHELL'] || 'cmd.exe';
+  let shell = 'cmd.exe';
+  if (shellName === 'powershell') {
+    shell = 'powershell.exe';
+  } else if (shellName === 'cmd') {
+    shell = 'cmd.exe';
+  } else if (shellName === 'zsh') {
+    shell = '/bin/zsh';
+  } else if (shellName === 'bash') {
+    shell = '/bin/bash';
+  } else {
+    // default
+    shell = process.env[os.platform() === 'win32' ? 'COMSPEC' : 'SHELL'] || (os.platform() === 'win32' ? 'cmd.exe' : '/bin/bash');
+  }
 
   const binDir = path.join(__dirname, '..', 'plugins', '.bin');
   const customEnv = { ...process.env };
