@@ -53,7 +53,7 @@ function spawnShell(shellName: string) {
     shell = process.env[os.platform() === 'win32' ? 'COMSPEC' : 'SHELL'] || (os.platform() === 'win32' ? 'cmd.exe' : '/bin/bash');
   }
 
-  const binDir = path.join(__dirname, '..', 'plugins', '.bin');
+  const binDir = path.join(getPluginsDir(), '.bin');
   const customEnv = { ...process.env };
   if (fs.existsSync(binDir)) {
     customEnv.PATH = `${binDir};${process.env.PATH || ''}`;
