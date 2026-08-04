@@ -361,7 +361,7 @@ export default function App() {
             <div style={{ display: 'flex', gap: '10px' }}>
               <input 
                 type="file" 
-                accept="image/*"
+                accept="image/*,.svg"
                 onChange={handleBackgroundUpload}
                 style={{ width: '130px' }}
               />
