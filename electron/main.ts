@@ -59,11 +59,22 @@ function spawnShell(shellName: string) {
     customEnv.PATH = `${binDir};${process.env.PATH || ''}`;
   }
 
+function getStartupDir(): string {
+  for (const arg of process.argv.slice(1)) {
+    try {
+      if (fs.existsSync(arg) && fs.statSync(arg).isDirectory()) {
+        return arg;
+      }
+    } catch (e) {}
+  }
+  return process.env.HOME || process.env.USERPROFILE || process.cwd();
+}
+
   ptyProcess = pty.spawn(shell, [], {
     name: 'xterm-color',
     cols: 80,
     rows: 30,
-    cwd: process.env.HOME || process.env.USERPROFILE,
+    cwd: getStartupDir(),
     env: customEnv as Record<string, string>
   });
 

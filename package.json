@@ -56,6 +56,9 @@
         "filter": ["**/*"]
       }
     ],
+    "nsis": {
+      "include": "build/installer.nsh"
+    },
     "win": {
       "target": [
         "nsis"
